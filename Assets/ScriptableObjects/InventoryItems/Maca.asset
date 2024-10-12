@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5444e1d26e651df4a9113d51bff3b0fd, type: 3}
+  m_Name: Maca
+  m_EditorClassIdentifier: 
+  itemName: maca
+  itemSprite: {fileID: 21300000, guid: 9107eabc5e9a9394eb24dcb4ac6a03fa, type: 3}
