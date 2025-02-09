@@ -13,15 +13,17 @@ public class Player : MonoBehaviour
     private CharacterController characterController;
     private PlayerInput playerInput;
     private float velocityY = 0f;
-
+    private bool isRunning;
     private bool isGrounded;
     public bool isAtacking;
+    public bool isJumping;
 
     [Header("Configuração do Pulo")]
     public float jumpForce = 8f; // Força inicial do pulo
     public float maxJumpTime = 0.25f; // Tempo máximo do pulo ao segurar o botão
     private float jumpTimeCounter;
     private bool jumpButtonHeld;
+    
 
     [Header("Gravidade")]
     public float gravity = -9.81f;
@@ -37,6 +39,8 @@ public class Player : MonoBehaviour
     public Color[] playersColors;
     private CanvasController canvasController;
 
+    public ParticleSystem poeiraParticle;
+
     void Awake()
     {
         initialSpeed = speed;
@@ -44,7 +48,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        
+
 
         DontDestroyOnLoad(gameObject);
 
@@ -86,7 +90,8 @@ public class Player : MonoBehaviour
     void Update()
     {
         //Seta a velocidade da animação igual a velocidade real do player
-        anim.speed = speed / initialSpeed;
+        
+        
         if (canvasController == null)
         {
             canvasController = FindFirstObjectByType<CanvasController>();
@@ -98,6 +103,7 @@ public class Player : MonoBehaviour
         Vector3 movement = new Vector3(moveInput.x, 0, moveInput.y);
 
         isGrounded = characterController.isGrounded;
+        if(isGrounded) isJumping = false;
 
         if (isGrounded && velocityY < 0)
         {
@@ -109,9 +115,11 @@ public class Player : MonoBehaviour
         {
             velocityY = jumpForce;
             jumpTimeCounter -= Time.deltaTime;
+            isJumping = true;
         }
         else if (!isGrounded)
         {
+            isJumping = true;
             if (velocityY > 0)
             {
                 velocityY += gravity * (lowJumpMultiplier - 1) * Time.deltaTime;
@@ -123,7 +131,7 @@ public class Player : MonoBehaviour
         }
 
         velocityY += gravity * Time.deltaTime;
-        if(velocityY < terminalSpeed) velocityY = terminalSpeed;
+        if (velocityY < terminalSpeed) velocityY = terminalSpeed;
         movement.y = velocityY;
 
         characterController.Move(movement * speed * Time.deltaTime);
@@ -131,6 +139,22 @@ public class Player : MonoBehaviour
         bool isWalk = movement.x != 0 || movement.z != 0;
         anim.SetBool("isWalk", isWalk);
         anim.SetBool("isAtacking", isAtacking);
+        anim.SetBool("isJumping", isJumping);
+
+        if(!isJumping)
+        {
+            anim.speed = speed / initialSpeed;
+        }
+        else
+        {
+            anim.speed = 1;
+        }
+
+        
+
+        //Ligar Poeira
+        var emission = poeiraParticle.emission;
+        emission.enabled = isGrounded && isRunning;
 
         if (movement.x != 0 || movement.z != 0)
         {
@@ -160,14 +184,16 @@ public class Player : MonoBehaviour
 
     public void OnRun(InputAction.CallbackContext context)
     {
-        if(context.started)
+        if (context.started)
         {
             Debug.Log("Run chamado.");
             speed = initialSpeed * 1.25f;
+            isRunning = true;
         }
-        else if(context.canceled)
+        else if (context.canceled)
         {
             speed = initialSpeed;
+            isRunning = false;
         }
     }
 
