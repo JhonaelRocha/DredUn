@@ -13,6 +13,7 @@ TagManager:
   - Wall
   - Enemy
   - SpawnPoint
+  - PostProcess
   layers:
   - Default
   - TransparentFX

@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     // Instância estática para o Singleton
     public static GameManager instance;
+    private PostProcessVolume postProcess;
 
     private GameObject[] players;
 
@@ -20,6 +23,9 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     void Update()
@@ -32,6 +38,23 @@ public class GameManager : MonoBehaviour
         else
         {
             Time.timeScale = 1f;
+        }
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        postProcess = FindObjectOfType<PostProcessVolume>();
+        if(postProcess == null) return;
+        if(PlayerPrefs.HasKey("PostProcess"))
+        {
+            if(PlayerPrefs.GetInt("PostProcess") == 1)
+            {
+                postProcess.gameObject.SetActive(true);
+            }
+            else
+            {
+                postProcess.gameObject.SetActive(false);
+            }
         }
     }
 }

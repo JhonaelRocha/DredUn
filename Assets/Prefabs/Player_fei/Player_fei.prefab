@@ -200,7 +200,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 7
   isAtacking: 0
-  gravity: -18
+  jumpForce: 1.5
+  maxJumpTime: 0.25
+  gravity: -12
+  fallMultiplier: 0.8
+  lowJumpMultiplier: 0.8
+  terminalSpeed: -2
   numberOfPlayer: 0
   playersColors:
   - {r: 0, g: 0.46924734, b: 1, a: 1}
@@ -292,6 +297,23 @@ MonoBehaviour:
     m_ActionId: 2cc43ae5-2f5a-40ce-9089-b966949cd5b0
     m_ActionName: Player/Jump[/ USB Gamepad          /button3,/ USB Gamepad         
       1/button3]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5961680310805026702}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: OnRun
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 766998a2-4458-4571-85fd-3b2f3c162f63
+    m_ActionName: Player/Run[/Keyboard/leftCtrl,/ USB Gamepad          /button4,/
+      USB Gamepad          1/button4]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
